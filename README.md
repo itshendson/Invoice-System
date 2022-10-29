@@ -14,7 +14,9 @@
 
 ## Tasks
 ### Project Management
-- [ ] Create Invoice Model
-- [ ] Create POST/GET requests for Invoice
-- [ ] Implement MongoDB connection
-- [ ] Test with Postman
+- [x] Create Invoice Model
+- [x] Implement POST/GET requests for Invoice
+- [x] Implement MongoDB connection
+- [x] Test POST/GET with Postman
+- [ ] Implement Validation for RequestBody
+- [ ] Test, test, test!
