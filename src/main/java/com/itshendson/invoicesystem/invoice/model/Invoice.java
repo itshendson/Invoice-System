@@ -5,6 +5,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -15,14 +16,15 @@ public class Invoice {
     @Id
     private String invoiceId;
     private Date date;
-    @NotBlank(message = "Customer name cannot be empty.")
-    private String customerName;
+    @NotBlank(message = "Company name cannot be empty.")
+    @Size(min = 3, message = "Company name must be at least 3 characters long.")
+    private String companyName;
     private BigDecimal invoiceAmount;
     private ArrayList<ItemRecord> services;
 
-    public Invoice(Date date, String customerName, BigDecimal invoiceAmount, ArrayList<ItemRecord> services) {
+    public Invoice(Date date, String companyName, BigDecimal invoiceAmount, ArrayList<ItemRecord> services) {
         this.date = new Date();
-        this.customerName = customerName;
+        this.companyName = companyName;
         this.invoiceAmount = new BigDecimal("0");
         this.services = new ArrayList<>();
     }
@@ -43,12 +45,12 @@ public class Invoice {
         this.date = date;
     }
 
-    public String getCustomerName() {
-        return customerName;
+    public String getCompanyName() {
+        return companyName;
     }
 
-    public void setCustomerName(String customerName) {
-        this.customerName = customerName;
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 
     public BigDecimal getInvoiceAmount() {
