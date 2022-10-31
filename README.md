@@ -18,5 +18,5 @@
 - [x] Implement POST/GET requests for Invoice
 - [x] Implement MongoDB connection
 - [x] Test POST/GET with Postman
-- [ ] Implement Validation for RequestBody
+- [x] Implement Validation for POST request
 - [ ] Test, test, test!
