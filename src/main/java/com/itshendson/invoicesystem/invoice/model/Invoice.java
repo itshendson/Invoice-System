@@ -68,4 +68,15 @@ public class Invoice {
     public void setServices(ArrayList<ItemRecord> services) {
         this.services = services;
     }
+
+    @Override
+    public String toString() {
+        return "Invoice{" +
+                "invoiceId='" + invoiceId + '\'' +
+                ", date=" + date +
+                ", companyName='" + companyName + '\'' +
+                ", invoiceAmount=" + invoiceAmount +
+                ", services=" + services +
+                '}';
+    }
 }
