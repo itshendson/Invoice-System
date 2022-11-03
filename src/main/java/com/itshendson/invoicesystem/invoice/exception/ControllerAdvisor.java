@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -33,7 +32,7 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(InvalidCompanyNameException.class)
-    protected ResponseEntity<Object> handleInvalidCompanyNameException(InvalidCompanyNameException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+    public ResponseEntity<Object> handleInvalidCompanyNameException(InvalidCompanyNameException ex, WebRequest request) {
         Map<String, Object> body = new HashMap<>();
 
         body.put("status", HttpStatus.BAD_REQUEST);
