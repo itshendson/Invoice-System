@@ -16,8 +16,8 @@ public class Invoice {
     @Id
     private String invoiceId;
     private Date date;
-    @NotBlank(message = "Company name cannot be empty.")
-    @Size(min = 3, message = "Company name must be at least 3 characters long.")
+    @NotBlank
+    @Size(min = 3, max = 70)
     private String companyName;
     private BigDecimal invoiceAmount;
     private ArrayList<ItemRecord> services;
