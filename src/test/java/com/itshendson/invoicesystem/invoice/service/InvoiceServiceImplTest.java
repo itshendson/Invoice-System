@@ -33,7 +33,6 @@ class InvoiceServiceImplTest {
     private Invoice dummyInvoiceOne;
     private Invoice dummyInvoiceTwo;
     private Invoice dummyInvalidInvoiceOne;
-    private ResponseEntity<Object> errorMessage;
 
     @BeforeEach
     void setUp() {
@@ -53,19 +52,9 @@ class InvoiceServiceImplTest {
 
     @DisplayName("Create a valid invoice")
     @Test
-    void createValidInvoice() {
+    void whenCreateValidInvoice_ReturnInvoice() {
         when(invoiceRepositoryMock.save(dummyInvoiceOne)).thenReturn(dummyInvoiceOne);
 
         assertEquals(dummyInvoiceOne, invoiceServiceTest.createInvoice(dummyInvoiceOne));
-    }
-
-    @DisplayName("Create an invalid invoice. Should still return an invoice. Validation check happens at controller.")
-    @Test
-    void createInvalidInvoiceWithShortCompanyName() {
-        dummyInvalidInvoiceOne = new Invoice(null, "X", new BigDecimal(0), new ArrayList<>());
-
-        when(invoiceRepositoryMock.save(dummyInvalidInvoiceOne)).thenReturn(dummyInvalidInvoiceOne);
-
-        assertEquals(dummyInvalidInvoiceOne, invoiceServiceTest.createInvoice(dummyInvalidInvoiceOne));
     }
 }
