@@ -1,6 +1,5 @@
 package com.itshendson.invoicesystem.invoice.service;
 
-import com.itshendson.invoicesystem.invoice.controller.InvoiceController;
 import com.itshendson.invoicesystem.invoice.model.Invoice;
 import com.itshendson.invoicesystem.invoice.repository.InvoiceRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,8 +9,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -32,17 +29,16 @@ class InvoiceServiceImplTest {
 
     private Invoice dummyInvoiceOne;
     private Invoice dummyInvoiceTwo;
-    private Invoice dummyInvalidInvoiceOne;
 
     @BeforeEach
     void setUp() {
-        dummyInvoiceOne = new Invoice(null, "Dummy Company One", new BigDecimal(0), new ArrayList<>());
-        dummyInvoiceTwo = new Invoice(null, "Dummy Company Two", new BigDecimal(0), new ArrayList<>());
     }
 
     @DisplayName("Get all invoices")
     @Test
     void getAllInvoice() {
+        dummyInvoiceOne = new Invoice(null, "Dummy Company One", new BigDecimal(0), new ArrayList<>());
+        dummyInvoiceTwo = new Invoice(null, "Dummy Company Two", new BigDecimal(0), new ArrayList<>());
         List<Invoice> invoices = Arrays.asList(dummyInvoiceOne, dummyInvoiceTwo);
 
         when(invoiceRepositoryMock.findAll()).thenReturn(invoices);
@@ -53,6 +49,7 @@ class InvoiceServiceImplTest {
     @DisplayName("Create a valid invoice")
     @Test
     void whenCreateValidInvoice_ReturnInvoice() {
+        dummyInvoiceOne = new Invoice(null, "Dummy Company One", new BigDecimal(0), new ArrayList<>());
         when(invoiceRepositoryMock.save(dummyInvoiceOne)).thenReturn(dummyInvoiceOne);
 
         assertEquals(dummyInvoiceOne, invoiceServiceTest.createInvoice(dummyInvoiceOne));
