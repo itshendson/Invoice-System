@@ -31,14 +31,14 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(InvalidCompanyNameException.class)
-    public ResponseEntity<Object> handleInvalidCompanyNameException(InvalidCompanyNameException ex, WebRequest request) {
+    @ExceptionHandler(InvoiceNotFoundException.class)
+    public ResponseEntity<Object> handleInvoiceNotFoundException(InvoiceNotFoundException ex, WebRequest request) {
         Map<String, Object> body = new HashMap<>();
 
-        body.put("status", HttpStatus.BAD_REQUEST);
+        body.put("status", HttpStatus.NOT_FOUND);
         body.put("message", ex.getMessage());
         body.put("timestamp", LocalDateTime.now());
 
-        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
 }
