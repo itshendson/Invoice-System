@@ -16,7 +16,8 @@
 ### Project Management
 - [x] Create Invoice Model
 - [x] Implement POST/GET requests for Invoice
-- [x] Implement MongoDB connection
+- [x] Implement MongoDB connection via Spring-Data-MongoDB
 - [x] Test POST/GET with Postman
 - [x] Implement Validation for POST request
-- [ ] Test, test, test!
+- [ ] Implement findById and deleteById methods
+- [ ] Test, test, test! (on-going)

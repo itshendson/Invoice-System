@@ -9,6 +9,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -17,9 +18,9 @@ import java.util.ArrayList;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@ExtendWith(SpringExtension.class)
 @WebMvcTest(InvoiceController.class)
 class InvoiceControllerTest {
 
@@ -76,5 +77,15 @@ class InvoiceControllerTest {
                 .contentType("application/json")
                 .content(body))
                 .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void whenFindInvoiceByExistingId_returnStatus200() throws Exception {
+        dummyInvoice = new Invoice(null, "", new BigDecimal(0), new ArrayList<>());
+        dummyInvoice.setInvoiceId("1S");
+
+        mockMvc.perform(get("/api/v1/invoice/{id}", "1S")
+                .contentType("application/json"))
+                .andExpect(status().isOk());
     }
 }
