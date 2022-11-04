@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("api/v1")
@@ -25,6 +26,11 @@ public class InvoiceController {
     @PostMapping("/invoice")
     public ResponseEntity<Invoice> createInvoice(@RequestBody @Valid Invoice invoice) {
         return ResponseEntity.status(HttpStatus.CREATED).body(invoiceServiceImpl.createInvoice(invoice));
+    }
+
+    @GetMapping("/invoice/{id}")
+    public ResponseEntity<Invoice> findInvoiceById(@PathVariable("id") String invoiceId) {
+        return ResponseEntity.status(HttpStatus.OK).body(invoiceServiceImpl.findInvoiceById(invoiceId));
     }
 
 }

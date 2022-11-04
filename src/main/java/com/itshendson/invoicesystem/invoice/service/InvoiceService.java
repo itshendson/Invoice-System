@@ -9,4 +9,6 @@ public interface InvoiceService {
     Invoice createInvoice(Invoice invoice);
 
     List<Invoice> getAllInvoice();
+
+    Invoice findInvoiceById(String invoiceId);
 }
