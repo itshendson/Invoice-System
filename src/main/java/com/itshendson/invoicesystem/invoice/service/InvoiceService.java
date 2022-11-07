@@ -11,4 +11,6 @@ public interface InvoiceService {
     List<Invoice> getAllInvoice();
 
     Invoice findInvoiceById(String invoiceId);
+
+    void deleteInvoiceById(String invoiceId);
 }

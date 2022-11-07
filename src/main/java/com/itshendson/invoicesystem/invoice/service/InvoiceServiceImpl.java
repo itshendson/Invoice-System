@@ -31,4 +31,11 @@ public class InvoiceServiceImpl implements InvoiceService{
         if (!invoiceOptional.isPresent()) throw new InvoiceNotFoundException();
         return invoiceOptional.get();
     }
+
+    @Override
+    public void deleteInvoiceById(String invoiceId) {
+        Optional<Invoice> invoiceOptional = invoiceRepository.findById(invoiceId);
+        if (!invoiceOptional.isPresent()) throw new InvoiceNotFoundException();
+        invoiceRepository.deleteById(invoiceId);
+    }
 }

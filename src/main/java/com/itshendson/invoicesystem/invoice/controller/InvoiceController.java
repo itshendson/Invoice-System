@@ -33,4 +33,10 @@ public class InvoiceController {
         return ResponseEntity.status(HttpStatus.OK).body(invoiceServiceImpl.findInvoiceById(invoiceId));
     }
 
+    @DeleteMapping("/invoice/{id}")
+    public ResponseEntity<String> deleteInvoiceById(@PathVariable("id") String invoiceId) {
+        invoiceServiceImpl.deleteInvoiceById(invoiceId);
+        return ResponseEntity.status(HttpStatus.OK).body("Invoice deleted.");
+    }
+
 }
