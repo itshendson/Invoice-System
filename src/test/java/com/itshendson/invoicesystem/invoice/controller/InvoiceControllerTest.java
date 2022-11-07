@@ -16,8 +16,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -85,6 +84,17 @@ class InvoiceControllerTest {
         dummyInvoice.setInvoiceId("1S");
 
         mockMvc.perform(get("/api/v1/invoice/{id}", "1S")
+                .contentType("application/json"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void whenDeleteExistingInvoice_returnStatus200() throws Exception {
+        dummyInvoice = new Invoice(null, "", new BigDecimal(0), new ArrayList<>());
+        dummyInvoice.setInvoiceId("1S");
+        String body = objectMapper.writeValueAsString(dummyInvoice);
+
+        mockMvc.perform(delete("/api/v1/invoice/{id}", "1S")
                 .contentType("application/json"))
                 .andExpect(status().isOk());
     }

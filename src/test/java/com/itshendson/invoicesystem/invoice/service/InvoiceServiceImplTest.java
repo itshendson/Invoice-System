@@ -70,4 +70,25 @@ class InvoiceServiceImplTest {
 
         assertThrows(InvoiceNotFoundException.class, () -> invoiceServiceTest.findInvoiceById("99S"));
     }
+
+    @Test
+    void whenDeleteExistingInvoiceById_ReturnInvoice() {
+        dummyInvoiceA = new Invoice(null, "Dummy Company", new BigDecimal(0), new ArrayList<>());
+        dummyInvoiceA.setInvoiceId("1S");
+
+        when(invoiceRepositoryMock.save(dummyInvoiceA)).thenReturn(dummyInvoiceA);
+
+        assertEquals(dummyInvoiceA, invoiceServiceTest.createInvoice(dummyInvoiceA));
+
+        doThrow(new InvoiceNotFoundException()).when(invoiceRepositoryMock).findById("1S");
+
+        assertThrows(InvoiceNotFoundException.class, () -> invoiceServiceTest.deleteInvoiceById("1S"));
+    }
+
+    @Test
+    void whenDeleteNonExistentInvoiceById_ReturnException() {
+        doThrow(new InvoiceNotFoundException()).when(invoiceRepositoryMock).findById("1S");
+
+        assertThrows(InvoiceNotFoundException.class, () -> invoiceServiceTest.deleteInvoiceById("1S"));
+    }
 }
