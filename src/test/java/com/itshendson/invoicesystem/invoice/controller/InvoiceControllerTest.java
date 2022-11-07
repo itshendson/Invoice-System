@@ -80,9 +80,6 @@ class InvoiceControllerTest {
 
     @Test
     void whenFindInvoiceByExistingId_returnStatus200() throws Exception {
-        dummyInvoice = new Invoice(null, "", new BigDecimal(0), new ArrayList<>());
-        dummyInvoice.setInvoiceId("1S");
-
         mockMvc.perform(get("/api/v1/invoice/{id}", "1S")
                 .contentType("application/json"))
                 .andExpect(status().isOk());
@@ -90,10 +87,6 @@ class InvoiceControllerTest {
 
     @Test
     void whenDeleteExistingInvoice_returnStatus200() throws Exception {
-        dummyInvoice = new Invoice(null, "", new BigDecimal(0), new ArrayList<>());
-        dummyInvoice.setInvoiceId("1S");
-        String body = objectMapper.writeValueAsString(dummyInvoice);
-
         mockMvc.perform(delete("/api/v1/invoice/{id}", "1S")
                 .contentType("application/json"))
                 .andExpect(status().isOk());
