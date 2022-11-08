@@ -91,4 +91,11 @@ class InvoiceControllerTest {
                 .contentType("application/json"))
                 .andExpect(status().isOk());
     }
+
+    @Test
+    void whenUpdateExistingInvoice_returnStatus200() throws Exception {
+        mockMvc.perform(put("/api/v1/invoice/{id}", "1S")
+                .contentType("application/json"))
+                .andExpect(status().isOk());
+    }
 }

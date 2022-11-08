@@ -4,10 +4,12 @@ import com.itshendson.invoicesystem.invoice.exception.InvoiceNotFoundException;
 import com.itshendson.invoicesystem.invoice.model.Invoice;
 import com.itshendson.invoicesystem.invoice.repository.InvoiceRepository;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
@@ -90,5 +92,30 @@ class InvoiceServiceImplTest {
         doThrow(new InvoiceNotFoundException()).when(invoiceRepositoryMock).findById("1S");
 
         assertThrows(InvoiceNotFoundException.class, () -> invoiceServiceTest.deleteInvoiceById("1S"));
+    }
+
+    @Test
+    void whenUpdateNonExistentInvoice_ReturnException() {
+        // when
+        doThrow(new InvoiceNotFoundException()).when(invoiceRepositoryMock).findById("1S");
+        // then
+        assertThrows(InvoiceNotFoundException.class, () -> invoiceServiceTest.findInvoiceById("1S"));
+    }
+
+    @DisplayName("Update student's first name")
+    @Test
+    void updateStudentFirstNameOnly() {
+        // given
+        dummyInvoiceA = new Invoice(null, "Old name", new BigDecimal(0), new ArrayList<>());
+        dummyInvoiceB = new Invoice(null, "New name", new BigDecimal(0), new ArrayList<>());
+
+        // when
+        when(invoiceRepositoryMock.findById("1S")).thenReturn(Optional.ofNullable(dummyInvoiceA));
+        when(invoiceRepositoryMock.save(Mockito.any())).thenReturn(dummyInvoiceB);
+
+        // then
+        Invoice updatedInvoice = invoiceServiceTest.updateInvoice("1S", dummyInvoiceB);
+        assertEquals(dummyInvoiceB.getCompanyName(), updatedInvoice.getCompanyName());
+        verify(invoiceRepositoryMock, times(1)).save(Mockito.any());
     }
 }
