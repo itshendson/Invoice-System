@@ -111,10 +111,14 @@ class InvoiceServiceImplTest {
 
     @Test
     void whenUpdateInvoice_ForNonExistentInvoice_ReturnException() {
+        // given
+        dummyInvoiceA = new Invoice(null, "Old name", new BigDecimal(0), new ArrayList<>());
+
         // when
         doThrow(new InvoiceNotFoundException()).when(invoiceRepositoryMock).findById("1S");
+
         // then
-        assertThrows(InvoiceNotFoundException.class, () -> invoiceServiceTest.findInvoiceById("1S"));
+        assertThrows(InvoiceNotFoundException.class, () -> invoiceServiceTest.updateInvoice("1S", dummyInvoiceA));
     }
 
     @Test
