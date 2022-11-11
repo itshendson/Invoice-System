@@ -42,7 +42,7 @@ public class InvoiceController {
     }
 
     @PutMapping("/invoice/{id}")
-    public ResponseEntity<Invoice> UpdateInvoice(@PathVariable("id") String invoiceId, @RequestBody @Valid Invoice invoice) {
+    public ResponseEntity<Invoice> UpdateInvoice(@PathVariable("id") String invoiceId, @RequestBody Invoice invoice) {
         Invoice returnedInvoice = invoiceServiceImpl.updateInvoice(invoiceId, invoice);
         return ResponseEntity.status(HttpStatus.OK).body(returnedInvoice);
     }

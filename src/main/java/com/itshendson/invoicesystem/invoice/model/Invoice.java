@@ -9,6 +9,7 @@ import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Objects;
 
 @Document
 public class Invoice {
@@ -25,7 +26,7 @@ public class Invoice {
     public Invoice(Date date, String companyName, BigDecimal invoiceAmount, ArrayList<ItemRecord> services) {
         this.date = new Date();
         this.companyName = companyName;
-        this.invoiceAmount = new BigDecimal("0");
+        this.invoiceAmount = Objects.requireNonNullElse(invoiceAmount, new BigDecimal(0));
         this.services = new ArrayList<>();
     }
 

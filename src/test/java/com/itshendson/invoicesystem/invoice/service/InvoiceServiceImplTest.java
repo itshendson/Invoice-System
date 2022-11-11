@@ -54,7 +54,7 @@ class InvoiceServiceImplTest {
     @Test
     void whenCreateInvoiceCalled_ReturnInvoice() {
         // given
-        dummyInvoiceA = new Invoice(null, "Dummy Company", new BigDecimal(0), new ArrayList<>());
+        dummyInvoiceA = new Invoice(null, "Dummy Company", new BigDecimal(10), new ArrayList<>());
 
         // when
         when(invoiceRepositoryMock.save(dummyInvoiceA)).thenReturn(dummyInvoiceA);
