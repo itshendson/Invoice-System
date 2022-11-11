@@ -25,12 +25,14 @@ public class InvoiceController {
 
     @PostMapping("/invoice")
     public ResponseEntity<Invoice> createInvoice(@RequestBody @Valid Invoice invoice) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(invoiceServiceImpl.createInvoice(invoice));
+        Invoice returnedInvoice = invoiceServiceImpl.createInvoice(invoice);
+        return ResponseEntity.status(HttpStatus.CREATED).body(returnedInvoice);
     }
 
     @GetMapping("/invoice/{id}")
     public ResponseEntity<Invoice> findInvoiceById(@PathVariable("id") String invoiceId) {
-        return ResponseEntity.status(HttpStatus.OK).body(invoiceServiceImpl.findInvoiceById(invoiceId));
+        Invoice returnedInvoice = invoiceServiceImpl.findInvoiceById(invoiceId);
+        return ResponseEntity.status(HttpStatus.OK).body(returnedInvoice);
     }
 
     @DeleteMapping("/invoice/{id}")
@@ -39,4 +41,9 @@ public class InvoiceController {
         return ResponseEntity.status(HttpStatus.OK).body("Invoice deleted.");
     }
 
+    @PutMapping("/invoice/{id}")
+    public ResponseEntity<Invoice> UpdateInvoice(@PathVariable("id") String invoiceId, @RequestBody @Valid Invoice invoice) {
+        Invoice returnedInvoice = invoiceServiceImpl.updateInvoice(invoiceId, invoice);
+        return ResponseEntity.status(HttpStatus.OK).body(returnedInvoice);
+    }
 }
