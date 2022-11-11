@@ -94,8 +94,12 @@ class InvoiceControllerTest {
 
     @Test
     void whenUpdateExistingInvoice_returnStatus200() throws Exception {
+        dummyInvoice = new Invoice(null, "update to this name", new BigDecimal(0), new ArrayList<>());
+        String body = objectMapper.writeValueAsString(dummyInvoice);
+
         mockMvc.perform(put("/api/v1/invoice/{id}", "1S")
-                .contentType("application/json"))
+                .contentType("application/json")
+                .content(body))
                 .andExpect(status().isOk());
     }
 }
