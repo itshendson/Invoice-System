@@ -4,19 +4,14 @@ import com.itshendson.invoicesystem.invoice.exception.InvoiceNotFoundException;
 import com.itshendson.invoicesystem.invoice.model.Invoice;
 import com.itshendson.invoicesystem.invoice.repository.InvoiceRepository;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -30,110 +25,80 @@ class InvoiceServiceImplTest {
     @InjectMocks
     private InvoiceServiceImpl invoiceServiceTest;
 
-    private Invoice dummyInvoiceA;
-    private Invoice dummyInvoiceB;
+    private Invoice invoice1;
+    private Invoice invoice2;
+    private List<Invoice> invoices;
 
     @BeforeEach
     void setUp() {
+        invoice1 = new Invoice(null, "company1", new BigDecimal(0), new ArrayList<>());
+        invoice2 = new Invoice(null, "company2", new BigDecimal(0), new ArrayList<>());
+        invoices = Arrays.asList(invoice1, invoice2);
     }
 
     @Test
-    void givenListOfInvoices_whenGetAllInvoiceCalled_ReturnAllInvoices() {
-        // given
-        dummyInvoiceA = new Invoice(null, "Dummy Company", new BigDecimal(0), new ArrayList<>());
-        dummyInvoiceB = new Invoice(null, "Dummy Company", new BigDecimal(0), new ArrayList<>());
-        List<Invoice> invoices = Arrays.asList(dummyInvoiceA, dummyInvoiceB);
-
-        // when
+    void testGetAllInvoice() {
         when(invoiceRepositoryMock.findAll()).thenReturn(invoices);
-
-        // then
-        assertEquals(invoices, invoiceServiceTest.getAllInvoice());
+        List<Invoice> actual = invoiceServiceTest.getAllInvoice();
+        assertEquals(invoices, actual);
     }
 
     @Test
-    void whenCreateInvoiceCalled_ReturnInvoice() {
-        // given
-        dummyInvoiceA = new Invoice(null, "Dummy Company", new BigDecimal(10), new ArrayList<>());
-
-        // when
-        when(invoiceRepositoryMock.save(dummyInvoiceA)).thenReturn(dummyInvoiceA);
-
-        // then
-        assertEquals(dummyInvoiceA, invoiceServiceTest.createInvoice(dummyInvoiceA));
+    void testGetAllInvoice_ReturnEmptyList() {
+        when(invoiceRepositoryMock.findAll()).thenReturn(Collections.emptyList());
+        List<Invoice> actual = invoiceServiceTest.getAllInvoice();
+        assertTrue(actual.isEmpty());
     }
 
     @Test
-    void whenFindInvoiceByIdCalled_ForExistingInvoice_ReturnInvoice() {
-        // given
-        dummyInvoiceA = new Invoice(null, "Dummy Company", new BigDecimal(0), new ArrayList<>());
-        dummyInvoiceA.setInvoiceId("1S");
-
-        // when
-        when(invoiceRepositoryMock.findById("1S")).thenReturn(Optional.ofNullable(dummyInvoiceA));
-
-        // then
-        assertEquals(dummyInvoiceA, invoiceServiceTest.findInvoiceById("1S"));
+    void testCreateInvoice() {
+        when(invoiceRepositoryMock.save(invoice1)).thenReturn(invoice1);
+        Invoice actual = invoiceServiceTest.createInvoice(invoice1);
+        assertEquals(invoice1, actual);
     }
 
     @Test
-    void whenFindInvoiceByIdCalled_ForNonExistentInvoice_ReturnException() {
-        // when
-        doThrow(new InvoiceNotFoundException()).when(invoiceRepositoryMock).findById("99S");
-
-        // then
-        assertThrows(InvoiceNotFoundException.class, () -> invoiceServiceTest.findInvoiceById("99S"));
+    void testFindInvoiceById_ReturnInvoice() {
+        when(invoiceRepositoryMock.findById("12345")).thenReturn(Optional.ofNullable(invoice1));
+        Invoice actual = invoiceServiceTest.findInvoiceById("12345");
+        assertEquals(invoice1, actual);
     }
 
     @Test
-    void whenDeleteInvoiceById_ForExistingInvoice_ReturnInvoice() {
-        // given
-        dummyInvoiceA = new Invoice(null, "Dummy Company", new BigDecimal(0), new ArrayList<>());
-        dummyInvoiceA.setInvoiceId("1S");
-
-        // when
-        when(invoiceRepositoryMock.save(dummyInvoiceA)).thenReturn(dummyInvoiceA);
-        assertEquals(dummyInvoiceA, invoiceServiceTest.createInvoice(dummyInvoiceA));
-        doThrow(new InvoiceNotFoundException()).when(invoiceRepositoryMock).findById("1S");
-
-        // then
-        assertThrows(InvoiceNotFoundException.class, () -> invoiceServiceTest.deleteInvoiceById("1S"));
+    void testFindInvoiceById_ReturnNotFoundException() {
+        when(invoiceRepositoryMock.findById("12345")).thenThrow(new InvoiceNotFoundException());
+        assertThrows(InvoiceNotFoundException.class, () -> invoiceServiceTest.findInvoiceById("12345"));
     }
 
     @Test
-    void whenDeleteInvoiceById_ForNonExistentInvoice_ReturnException() {
-        // when
-        doThrow(new InvoiceNotFoundException()).when(invoiceRepositoryMock).findById("1S");
-
-        // then
-        assertThrows(InvoiceNotFoundException.class, () -> invoiceServiceTest.deleteInvoiceById("1S"));
+    void testDeleteInvoiceById() {
+        when(invoiceRepositoryMock.findById("12345")).thenReturn(Optional.ofNullable(invoice1));
+        invoiceServiceTest.deleteInvoiceById("12345");
+        verify(invoiceRepositoryMock, times(1)).delete(invoice1);
     }
 
     @Test
-    void whenUpdateInvoice_ForNonExistentInvoice_ReturnException() {
-        // given
-        dummyInvoiceA = new Invoice(null, "Old name", new BigDecimal(0), new ArrayList<>());
-
-        // when
-        doThrow(new InvoiceNotFoundException()).when(invoiceRepositoryMock).findById("1S");
-
-        // then
-        assertThrows(InvoiceNotFoundException.class, () -> invoiceServiceTest.updateInvoice("1S", dummyInvoiceA));
+    void testDeleteInvoiceById_ReturnNotFoundException() {
+        when(invoiceRepositoryMock.findById("12345")).thenThrow(new InvoiceNotFoundException());
+        assertThrows(InvoiceNotFoundException.class, () -> invoiceServiceTest.deleteInvoiceById("12345"));
+        verify(invoiceRepositoryMock, times(0)).delete(invoice1);
     }
 
     @Test
-    void whenUpdateInvoice_ForExistingInvoice_ReturnException() {
-        // given
-        dummyInvoiceA = new Invoice(null, "Old name", new BigDecimal(0), new ArrayList<>());
-        dummyInvoiceB = new Invoice(null, "New name", new BigDecimal(0), new ArrayList<>());
-
-        // when
-        when(invoiceRepositoryMock.findById("1S")).thenReturn(Optional.ofNullable(dummyInvoiceA));
-        when(invoiceRepositoryMock.save(Mockito.any())).thenReturn(dummyInvoiceB);
+    void testUpdateInvoice_ReturnNewInvoice() {
+        when(invoiceRepositoryMock.findById("12345")).thenReturn(Optional.ofNullable(invoice1));
+        when(invoiceRepositoryMock.save(Mockito.any())).thenReturn(invoice2);
 
         // then
-        Invoice updatedInvoice = invoiceServiceTest.updateInvoice("1S", dummyInvoiceB);
-        assertEquals(dummyInvoiceB.getCompanyName(), updatedInvoice.getCompanyName());
+        Invoice newInvoice = invoiceServiceTest.updateInvoice("12345", invoice2);
+        assertEquals(invoice2.getCompanyName(), newInvoice.getCompanyName());
         verify(invoiceRepositoryMock, times(1)).save(Mockito.any());
+    }
+
+    @Test
+    void testUpdateInvoice_ReturnNotFoundException() {
+        when(invoiceRepositoryMock.findById("11111")).thenThrow(InvoiceNotFoundException.class);
+        assertThrows(InvoiceNotFoundException.class, () -> invoiceServiceTest.updateInvoice("11111", invoice2));
+        verify(invoiceRepositoryMock, times(0)).save(invoice2);
     }
 }
